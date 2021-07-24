@@ -16,7 +16,7 @@ services:
       - ./:/usr/src/record_wod
     environment:
       RAILS_ENV: development
-      DATABASE_URL: postgres://postgres@db:5432
+      DATABASE_URL: "postgres://postgres@db:${DOCKER_DB_CONTAINER_PORT}"
     tty: true
     stdin_open: true
   db:
