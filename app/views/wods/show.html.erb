@@ -1,6 +1,7 @@
 <%= link_to '< WOD一覧', wods_path, class: 'btn btn-secondary my-3' %>
 <h1>WOD詳細</h1>
 <%= render 'shared/wod_detail', wod: @wod %>
+<%= link_to 'WODを編集', edit_wod_path(@wod), class: 'btn btn-dark mt-3 mb-5' %>
 
 <h2>ログ</h2>
 <% @logs.each do |log| %>

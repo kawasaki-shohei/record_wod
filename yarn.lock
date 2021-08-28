@@ -3872,6 +3872,11 @@ jest-worker@^25.1.0:
     merge-stream "^2.0.0"
     supports-color "^7.0.0"
 
+jquery-autosize@^1.18.18:
+  version "1.18.18"
+  resolved "https://registry.yarnpkg.com/jquery-autosize/-/jquery-autosize-1.18.18.tgz#28fcdfd671cbf3ee661ca484c19ee7aaa65e825a"
+  integrity sha1-KPzf1nHL8+5mHKSEwZ7nqqZeglo=
+
 jquery@^3.5.1:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.5.1.tgz#d7b4d08e1bfdb86ad2f1a3d039ea17304717abb5"

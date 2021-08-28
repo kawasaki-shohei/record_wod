@@ -8,4 +8,29 @@ class WodsController < ApplicationController
     @wod = Wod.find(params[:id])
     @logs = @wod.logs
   end
+
+  def edit
+    @wod = Wod.find(params[:id])
+    @logs = @wod.logs
+  end
+
+  def update
+    @wod = Wod.find(params[:id])
+    if @wod.update(wod_params)
+      redirect_to wod_path(@wod), notice: '更新しました。'
+    else
+      render :edit
+    end
+  end
+
+  private
+
+  def wod_params
+    params.require(:wod).permit(
+      :date,
+      :name,
+      :content,
+      :box,
+    )
+  end
 end

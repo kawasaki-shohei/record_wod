@@ -3,9 +3,15 @@ ja:
 
   activerecord:
     models:
+      wod: WOD
       log: ログ
 
     attributes:
+      wod:
+        date: 日付
+        name: 名称
+        content: 内容
+        box: BOX
       log:
         date: 日付
         result: 結果
