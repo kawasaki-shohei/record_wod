@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   end
   namespace :api, defaults: { format: :json} do
     namespace :v1 do
-      post 'create_maebashi_wod', to: 'maebashi_wods#create'
+      post 'fetch_wods', to: 'fetch_wods#create'
     end
   end
   root 'wods#index'
