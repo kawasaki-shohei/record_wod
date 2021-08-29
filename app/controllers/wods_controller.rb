@@ -1,7 +1,7 @@
 class WodsController < ApplicationController
   def index
     @q = Wod.ransack(params[:q])
-    @wods = @q.result(distinct: true).page(params[:page])
+    @wods = @q.result(distinct: true).order(date: :desc).page(params[:page])
   end
 
   def show
