@@ -8,12 +8,27 @@
         <%= f.date_field :date_eq, class: 'form-control' %>
       </div>
   </div>
+
   <div class="form-group row">
     <%= f.label :content, "内容", class: 'col-2 col-form-label' %>
     <div class="col-10">
       <%= f.search_field :content_i_cont, class: 'form-control' %>
     </div>
   </div>
+
+  <div class="form-group">
+    <%= label :wod, :tag_list, 'タグ', class: "col-form-label" %>
+    <%= text_field :wod, :tag_list, value: params.dig(:wod, :tag_list), class: "form-control" %>
+  </div>
+
+  <% if @tags.present? %>
+    <div class="form-group">
+      <% @tags.each do |tag| %>
+        <%= button_tag tag.name, type: 'button', class: 'btn btn-light tag-btn' %>
+      <% end %>
+    </div>
+  <% end %>
+
   <%= f.submit '検索', class: 'btn btn-dark btn-block' %>
 <% end %>
 
@@ -37,7 +52,7 @@
 
     <div class="mt-5 text-center">
       <% (1..@wods.total_pages).each do |page| %>
-        <%= link_to page.to_s, wods_path(q: wod_params_hash, page: page), class: 'btn btn-light mt-1' %>
+        <%= link_to page.to_s, wods_path(q: wod_params_hash, wod: tag_list_params_hash, page: page), class: 'btn btn-light mt-1' %>
       <% end %>
     </div>
   <% end %>
@@ -58,3 +73,31 @@
     border-color: #dee2e6;
   }
 </style>
+
+<script>
+  $(function(){
+    const tagListInput = $('#wod_tag_list')
+    let tagList
+    let targetTag
+    if(tagListInput.val() === "") {
+      tagList = []
+    } else {
+      tagList = tagListInput.val().split(', ')
+    }
+
+    function updateTagList() {
+      tagListInput.val(tagList.join(', '))
+    }
+    updateTagList()
+
+    $('.tag-btn').click(function() {
+      targetTag = $(this).text()
+      if(tagList.includes(targetTag)){
+        tagList = tagList.filter(list => list !== targetTag)
+      } else {
+        tagList.push(targetTag)
+      }
+      updateTagList()
+    })
+  });
+</script>

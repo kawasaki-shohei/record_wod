@@ -21,11 +21,48 @@
     <%= f.text_area :content, class: 'form-control' %>
   </div>
 
+  <div class="form-group">
+    <%= f.label :tag_list, class: 'col-form-label' %>
+    <%= f.text_field :tag_list, value: @wod.tag_list.join(', '), class: 'form-control' %>
+  </div>
+
+  <% if @tags.present? %>
+    <div class="form-group">
+      <% @tags.each do |tag| %>
+        <%= button_tag tag.name, type: 'button', class: 'btn btn-light tag-btn' %>
+      <% end %>
+    </div>
+  <% end %>
+
   <%= f.submit '更新', class: 'btn btn-dark mt-3' %>
 <% end %>
 
 <script>
   $(function(){
     $('textarea').autosize();
+
+    const tagListInput = $('#wod_tag_list')
+    let tagList
+    let targetTag
+    if(tagListInput.val() === "") {
+      tagList = []
+    } else {
+      tagList = tagListInput.val().split(', ')
+    }
+
+    function updateTagList() {
+      tagListInput.val(tagList.join(', '))
+    }
+    updateTagList()
+
+    $('.tag-btn').click(function() {
+      targetTag = $(this).text()
+      if(tagList.includes(targetTag)){
+        tagList = tagList.filter(list => list !== targetTag)
+      } else {
+        tagList.push(targetTag)
+      }
+      updateTagList()
+    })
   });
 </script>
