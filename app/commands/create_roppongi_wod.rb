@@ -1,18 +1,20 @@
 require 'net/http'
 
-class CreateMaebashiWod
+class CreateRoppongiWod
 
   prepend SimpleCommand
   include ActiveModel::Model
   include ActiveModel::Attributes
 
-  WOD_URL = Rails.application.credentials.dig(:maebashi, :url)
-  WOD_CONTENT_CLASS_NAME = Rails.application.credentials.dig(:maebashi, :wod_content_class_name)
-  AD_ID_NAME = Rails.application.credentials.dig(:maebashi, :ad_id_name)
+  WOD_URL = Rails.application.credentials.dig(:roppongi, :url)
+  WOD_CONTENT_CLASS_NAME = Rails.application.credentials.dig(:roppongi, :wod_content_class_name)
+  REMOVE_CLASS_NAME = Rails.application.credentials.dig(:roppongi, :remove_class_name)
+  REMOVE_STR = Rails.application.credentials.dig(:roppongi, :remove_str)
 
-  attribute :target_date, :date, default: Date.current
+  attribute :page
 
   validate :must_be_correct_date
+  validate :must_be_presence_wod_content
 
   def initialize(*)
     super
@@ -20,11 +22,12 @@ class CreateMaebashiWod
   end
 
   def call
-    return nil if invalid?
-
     call_init_wod
     set_wod_data(fetch_wod)
-    @wod.save! if errors.blank?
+    return nil if errors.any?
+    return nil if invalid?
+
+    @wod.save!
     output_success_log
     @wod
   end
@@ -32,19 +35,22 @@ class CreateMaebashiWod
   private
 
   def must_be_correct_date
-    errors.add(:target_date, :invalid) unless target_date.is_a?(Date)
-    # MARK: CrossfitMaebashiに同じ日のWODは存在しない
-    errors.add(:target_date, "が重複しています。") if Wod.exists?(date: target_date, box: :maebashi)
+    # MARK: CrossfitRoppongiに同じ日のWODは存在しない
+    errors.add(:base, "日付が重複しています。") if Wod.exists?(date: @wod.date, box: :roppongi)
+  end
+
+  def must_be_presence_wod_content
+    errors.add(:base, "WOD内容が空です。") if @wod.content.gsub(/\s+/, "").blank?
   end
 
   def call_init_wod
-    @wod = Wod.new(box: :maebashi)
+    @wod = Wod.new(box: :roppongi)
   end
 
   def output_request_log(uri)
     @logger.info(<<~LOG)
       =================================
-      CrossFitMaebashiへ通信開始
+      CrossFitRoppongiへ通信開始
       URI: #{uri}
       =================================
     LOG
@@ -62,15 +68,17 @@ class CreateMaebashiWod
   def output_success_log
     @logger.info(<<~LOG)
       =================================
-      #{@wod.date}のCrossFitMaebashiのWODの取得に成功しました。
+      #{@wod.date}のCrossFitRoppongiのWODの取得に成功しました。
       =================================
     LOG
   end
 
   def fetch_wod
-    target_date_str = target_date.strftime('%Y-%-m-%-d')
-    prev_date_str = target_date.prev_day.strftime('%Y/%m/%d')
-    uri = URI.parse(URI.encode("#{WOD_URL + prev_date_str}/#{target_date_str}/"))
+    if page.present?
+      uri = URI.parse(URI.encode("#{WOD_URL}page/#{page}/"))
+    else
+      uri = URI.parse(URI.encode(WOD_URL))
+    end
     http = Net::HTTP.new(uri.host, uri.port)
 
     # 通信設定
@@ -100,22 +108,28 @@ class CreateMaebashiWod
 
   def set_wod_data(response)
     if response.code_type == Net::HTTPOK
-      @logger.info("#{target_date}のWODの取得に成功")
+      @logger.info("CrossFitRoppongiのWODの取得に成功")
       doc = Nokogiri::HTML.parse(response.body)
-      entry_content = doc.css(".#{WOD_CONTENT_CLASS_NAME}").first
-      entry_content.css("##{AD_ID_NAME}").remove
-      @wod.date = target_date
-      @wod.name = "Maebashi#{target_date.to_s}"
+      year = doc.css('.date .year').first.text
+      month = doc.css('.date .month').first.text.delete('月')
+      day = doc.css('.date .day').first.text
+      target_date = Date.parse("#{year}-#{month}-#{day}")
+      article_content_wrap = doc.css(".#{WOD_CONTENT_CLASS_NAME}").first
+      # MARK: 変な記述が隠れているので削除
+      article_content_wrap.css(".#{REMOVE_CLASS_NAME}").remove
+      # MARK: 見出しを削除
+      article_content_wrap.css("h2:first-child").remove
       # MARK: textを呼び出すとbrタグの改行が消えてしまうため予め改行コードに変換しておく
-      entry_content.search('br').each { |br| br.replace("\n") }
-      @wod.content = entry_content.text.strip.gsub(/\n+/, "\n")
+      article_content_wrap.search('br').each { |br| br.replace("\n") }
+      @wod.content = article_content_wrap.text.strip.gsub(/\r\n+|\n+|\r+/, "\n")
+      @wod.date = target_date
+      @wod.name = "Roppongi#{target_date.to_s}"
     elsif response.code_type == Net::HTTPNotFound
-      message = "#{target_date}のWODは存在しません。"
+      message = "WODページにアクセスできません"
       errors.add(:base, message)
       @logger.info(message)
     else
       raise "Unexpected Error"
     end
   end
-
 end

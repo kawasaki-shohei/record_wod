@@ -5,10 +5,10 @@ is_succeeded = true
 Wod.transaction do
   wod_data.each do |attributes|
     wod = Wod.new(
-      id: attributes["id"],
       date: Date.parse(attributes["date"]),
       name: attributes["name"],
-      content: attributes["content"]
+      content: attributes["content"],
+      box: attributes["box"]
     )
     unless wod.save
       is_succeeded = false
@@ -18,6 +18,8 @@ Wod.transaction do
     end
   end
 end
+
+ActiveRecord::Base.connection.reset_pk_sequence!("wods")
 
 if is_succeeded
   puts "全てのWODデータの挿入に成功しました。"

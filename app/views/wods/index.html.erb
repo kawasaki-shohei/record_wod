@@ -16,15 +16,45 @@
   </div>
   <%= f.submit '検索', class: 'btn btn-dark btn-block' %>
 <% end %>
-<br><br>
-<h2>ヒットしたWOD</h2>
-<% if @wod.present? %>
-  <%= render 'shared/wod_detail', wod: @wod %>
 
-  <br><br>
+<h2 class="mt-5">ヒットしたWOD</h2>
+<% if @wods.present? %>
+  <% wod = @wods.first %>
+  <%= render 'shared/wod_detail', wod: wod %>
+
   <div class="text-right">
-    <%= link_to 'WOD詳細 >', wod_path(@wod), class: 'btn btn-secondary' %>
+    <%= link_to 'WOD詳細 >', wod_path(wod), class: 'btn btn-secondary btn-block' %>
   </div>
+
+  <div class="mt-5">
+    <%= paginate @wods %>
+  </div>
+
+  <% if @wods.total_count > 1 %>
+    <p class="text-center">
+      <%= "全#{@wods.total_count}件" %>
+    </p>
+
+    <div class="mt-5 text-center">
+      <% (1..@wods.total_pages).each do |page| %>
+        <%= link_to page.to_s, wods_path(q: wod_params_hash, page: page), class: 'btn btn-light mt-1' %>
+      <% end %>
+    </div>
+  <% end %>
 <% else %>
   該当するWODはありません。
 <% end %>
+
+<style>
+  .pagination {
+    justify-content: center;
+  }
+  .page-item a.page-link {
+    color: #6c757d;
+  }
+  .page-item.active .page-link {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    border-color: #dee2e6;
+  }
+</style>
