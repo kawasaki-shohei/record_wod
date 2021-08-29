@@ -1,7 +1,7 @@
 class WodsController < ApplicationController
   def index
     @q = Wod.ransack(params[:q])
-    @wod = @q.result(distinct: true).shuffle.first
+    @wods = @q.result(distinct: true).page(params[:page])
   end
 
   def show

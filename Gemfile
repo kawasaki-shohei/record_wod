@@ -33,6 +33,7 @@ gem 'selenium-webdriver'
 gem 'ransack'
 gem 'simple_command'
 gem 'rails-i18n'
+gem 'kaminari'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
