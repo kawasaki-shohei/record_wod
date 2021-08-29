@@ -4,6 +4,8 @@ class Wod < ApplicationRecord
 
   has_many :logs
 
+  acts_as_taggable
+
   enum box: { none: 0, roppongi: 1, maebashi: 2 }, _prefix: :box
 
   validates :date, presence: true

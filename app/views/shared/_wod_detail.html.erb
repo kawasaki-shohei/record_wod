@@ -1,20 +1,27 @@
 <div>
-  <h3>日付</h3>
+  <h5 class="p-1 bg-dark text-light">日付</h5>
   <div class="mb-4">
     <%= wod.date %>
   </div>
 
-  <h3>名称</h3>
+  <h5 class="p-1 bg-dark text-light">名称</h5>
   <div class="mb-4">
     <%= wod.name %>
   </div>
 
-  <h3>Box</h3>
+  <h5 class="p-1 bg-dark text-light">Box</h5>
   <div class="mb-4">
     <%= wod.box %>
   </div>
 
-  <h3>内容</h3>
+  <% if wod.tag_list.present? %>
+    <h5 class="p-1 bg-dark text-light">タグ</h5>
+    <div class="mb-4">
+      <%= wod.tag_list %>
+    </div>
+  <% end %>
+
+  <h5 class="p-1 bg-dark text-light">内容</h5>
   <div class="mb-4">
     <%= simple_format(wod.content) %>
   </div>
