@@ -26,9 +26,9 @@
     <%= f.text_area :tag_list, value: @wod.tag_list.join(', '), class: 'form-control overflow-auto' %>
   </div>
 
-  <div class="form-inline">
+  <div class="form-inline mb-3">
     <div class="form-group w-75">
-      <%= text_field :other, :add_tag, class: 'form-control' %>
+      <%= text_field :other, :add_tag, class: 'form-control w-100' %>
     </div>
     <div class="form-group w-25 pl-1">
       <%= button_tag '追加', type: 'button', id: 'add-tag-btn', class: 'btn btn-dark' %>
@@ -48,6 +48,10 @@
 
 <script>
   $(function(){
+    const tagListInput = $('#wod_tag_list')
+    let tagList
+    let targetTag
+
     $('textarea').autosize();
 
     function changeTagList(targetTag) {
@@ -64,33 +68,32 @@
       target.trigger('autosize.resize');
     }
 
-    $('#add-tag-btn').click(function() {
-      targetTag = $('#other_add_tag').val()
-      changeTagList(targetTag)
-      updateTagList()
-      $('#other_add_tag').val('')
-      triggerAutosizeResize($('#wod_tag_list'))
-    })
+    function updateTagList() {
+      tagListInput.val(tagList.join(', '))
+    }
 
-    const tagListInput = $('#wod_tag_list')
-    let tagList
-    let targetTag
     if(tagListInput.val() === "") {
       tagList = []
     } else {
       tagList = tagListInput.val().split(', ')
     }
 
-    function updateTagList() {
-      tagListInput.val(tagList.join(', '))
-    }
     updateTagList()
+
+    $('#add-tag-btn').click(function() {
+      targetTag = $('#other_add_tag').val()
+      if(targetTag === '') { return }
+      changeTagList(targetTag)
+      updateTagList()
+      $('#other_add_tag').val('')
+      triggerAutosizeResize(tagListInput)
+    })
 
     $('.tag-btn').click(function() {
       targetTag = $(this).text()
       changeTagList(targetTag)
       updateTagList()
-      triggerAutosizeResize($('#wod_tag_list'))
+      triggerAutosizeResize(tagListInput)
     })
   });
 </script>
