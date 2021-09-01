@@ -22,8 +22,17 @@
   </div>
 
   <div class="form-group">
-    <%= f.label :tag_list, class: 'col-form-label' %>
-    <%= f.text_field :tag_list, value: @wod.tag_list.join(', '), class: 'form-control' %>
+    <%= f.label :tag_list, 'タグ', class: 'col-form-label' %>
+    <%= f.text_area :tag_list, value: @wod.tag_list.join(', '), class: 'form-control overflow-auto' %>
+  </div>
+
+  <div class="form-inline">
+    <div class="form-group w-75">
+      <%= text_field :other, :add_tag, class: 'form-control' %>
+    </div>
+    <div class="form-group w-25 pl-1">
+      <%= button_tag '追加', type: 'button', id: 'add-tag-btn', class: 'btn btn-dark' %>
+    </div>
   </div>
 
   <% if @tags.present? %>
@@ -41,6 +50,28 @@
   $(function(){
     $('textarea').autosize();
 
+    function changeTagList(targetTag) {
+      if(tagList.includes(targetTag)){
+        tagList = tagList.filter(list => list !== targetTag)
+      } else {
+        tagList.push(targetTag)
+      }
+    }
+
+    // JSで挿入したときにtextareaを広げる
+    // @params [jQuery Object] target
+    function triggerAutosizeResize(target) {
+      target.trigger('autosize.resize');
+    }
+
+    $('#add-tag-btn').click(function() {
+      targetTag = $('#other_add_tag').val()
+      changeTagList(targetTag)
+      updateTagList()
+      $('#other_add_tag').val('')
+      triggerAutosizeResize($('#wod_tag_list'))
+    })
+
     const tagListInput = $('#wod_tag_list')
     let tagList
     let targetTag
@@ -57,12 +88,9 @@
 
     $('.tag-btn').click(function() {
       targetTag = $(this).text()
-      if(tagList.includes(targetTag)){
-        tagList = tagList.filter(list => list !== targetTag)
-      } else {
-        tagList.push(targetTag)
-      }
+      changeTagList(targetTag)
       updateTagList()
+      triggerAutosizeResize($('#wod_tag_list'))
     })
   });
 </script>

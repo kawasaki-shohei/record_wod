@@ -7,7 +7,7 @@ class WodsController < ApplicationController
       @q = Wod.ransack(params[:q])
     end
     @wods = @q.result(distinct: true).order(date: :desc).page(params[:page])
-    @tags = ActsAsTaggableOn::Tag.all
+    @tags = ActsAsTaggableOn::Tag.all.order(:name)
   end
 
   def show
@@ -18,13 +18,13 @@ class WodsController < ApplicationController
   def edit
     @wod = Wod.find(params[:id])
     @logs = @wod.logs
-    @tags = ActsAsTaggableOn::Tag.all
+    @tags = ActsAsTaggableOn::Tag.all.order(:name)
   end
 
   def update
     @wod = Wod.find(params[:id])
     @logs = @wod.logs
-    @tags = ActsAsTaggableOn::Tag.all
+    @tags = ActsAsTaggableOn::Tag.all.order(:name)
     if @wod.update(wod_params)
       redirect_to wod_path(@wod), notice: '更新しました。'
     else
