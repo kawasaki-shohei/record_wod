@@ -37,8 +37,13 @@
   <% wod = @wods.first %>
   <%= render 'shared/wod_detail', wod: wod %>
 
-  <div class="text-right">
-    <%= link_to 'WOD詳細 >', wod_path(wod), class: 'btn btn-secondary btn-block' %>
+  <div class="d-flex">
+    <div class="w-50 pr-2">
+      <%= link_to 'WOD詳細', wod_path(wod), class: 'btn btn-secondary btn-block' %>
+    </div>
+    <div class="w-50 pl-2">
+      <%= link_to 'WOD編集', edit_wod_path(wod), class: 'btn btn-dark btn-block' %>
+    </div>
   </div>
 
   <div class="mt-5">
