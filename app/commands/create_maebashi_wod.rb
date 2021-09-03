@@ -23,8 +23,13 @@ class CreateMaebashiWod
     return nil if invalid?
 
     call_init_wod
-    set_wod_data(fetch_wod)
-    @wod.save! if errors.blank?
+    wod_url = fetch_wod_url
+    return nil if wod_url.nil?
+
+    set_wod_data(wod_url)
+    return nil if errors.any?
+
+    @wod.save!
     output_success_log
     @wod
   end
@@ -67,10 +72,8 @@ class CreateMaebashiWod
     LOG
   end
 
-  def fetch_wod
-    target_date_str = target_date.strftime('%Y-%-m-%-d')
-    prev_date_str = target_date.prev_day.strftime('%Y/%m/%d')
-    uri = URI.parse(URI.encode("#{WOD_URL + prev_date_str}/#{target_date_str}/"))
+  def fetch_html(url_str)
+    uri = URI.parse(URI.encode(url_str))
     http = Net::HTTP.new(uri.host, uri.port)
 
     # 通信設定
@@ -98,7 +101,27 @@ class CreateMaebashiWod
     response
   end
 
-  def set_wod_data(response)
+  def fetch_wod_url
+    uri = "#{WOD_URL}category/wod/"
+    response = fetch_html(uri)
+    if response.code_type == Net::HTTPOK
+      @logger.info("WOD一覧の取得に成功")
+      doc = Nokogiri::HTML.parse(response.body)
+      entry_title = doc.css(".entry-title").first
+      entry_a_tag = entry_title.css("a").first
+      entry_a_tag.attribute('href').value
+    elsif response.code_type == Net::HTTPNotFound
+      message = "WOD一覧画面は存在しません。"
+      errors.add(:base, message)
+      @logger.info(message)
+      return nil
+    else
+      raise "Unexpected Error"
+    end
+  end
+
+  def set_wod_data(url)
+    response = fetch_html(url)
     if response.code_type == Net::HTTPOK
       @logger.info("#{target_date}のWODの取得に成功")
       doc = Nokogiri::HTML.parse(response.body)
