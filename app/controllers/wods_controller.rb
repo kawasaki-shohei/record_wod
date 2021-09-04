@@ -10,6 +10,21 @@ class WodsController < ApplicationController
     @tags = ActsAsTaggableOn::Tag.all.order(:name)
   end
 
+  def new
+    @wod = Wod.new
+    @tags = ActsAsTaggableOn::Tag.all.order(:name)
+  end
+
+  def create
+    @wod = Wod.new(wod_params)
+    @tags = ActsAsTaggableOn::Tag.all.order(:name)
+    if @wod.save
+      redirect_to wod_path(@wod), notice: '作成しました。'
+    else
+      render :new
+    end
+  end
+
   def show
     @wod = Wod.find(params[:id])
     @logs = @wod.logs
