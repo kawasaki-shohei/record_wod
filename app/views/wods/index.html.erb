@@ -1,6 +1,11 @@
-<h1>WOD一覧</h1>
-<br><br>
-<h2>WODを検索</h2>
+<h2 class="mb-3">WOD一覧</h2>
+<div class="d-flex flex-row mb-3">
+  <h3>WODを検索</h3>
+  <div class="ml-auto">
+    <%= link_to '追加', new_wod_path, class: 'btn btn-dark' %>
+  </div>
+</div>
+
 <%= search_form_for @q do |f| %>
   <div class="form-group row">
       <%= f.label :date, "日付", class: 'col-2 col-form-label' %>
@@ -32,7 +37,7 @@
   <%= f.submit '検索', class: 'btn btn-dark btn-block' %>
 <% end %>
 
-<h2 class="mt-5">ヒットしたWOD</h2>
+<h3 class="mt-5">ヒットしたWOD</h3>
 <% if @wods.present? %>
   <% wod = @wods.first %>
   <%= render 'shared/wod_detail', wod: wod %>
