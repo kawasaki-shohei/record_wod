@@ -6,7 +6,7 @@ class Wod < ApplicationRecord
 
   acts_as_taggable
 
-  enum box: { none: 0, roppongi: 1, maebashi: 2, thedadwod: 3 }, _prefix: :box
+  enum box: { none: 0, roppongi: 1, maebashi: 2, thedadwod: 3, online_wod: 4 }, _prefix: :box
 
   validates :date, presence: true
   validates :name, presence: true
