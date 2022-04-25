@@ -5,7 +5,11 @@ ENV LANG C.UTF-8
 
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-RUN apt-get update -qq && apt-get install -y build-essential libpq-dev vim nodejs postgresql-client yarn
+RUN apt-get update -qq && apt-get install -y build-essential libpq-dev vim postgresql-client yarn \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+# nodejsをバージョン指定してインストールするためにnモジュールを使用する
+RUN yarn global add n && n 12.13.0
 
 # chromeをインストール
 #RUN curl https://intoli.com/install-google-chrome.sh | bash
