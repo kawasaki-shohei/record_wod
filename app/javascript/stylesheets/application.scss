@@ -1,1 +1,7 @@
 @import '~bootstrap/scss/bootstrap';
+@import '@fullcalendar/common/main.css';
+
+// グローバルCSS変数をカスタマイズ
+:root {
+  --fc-small-font-size: .5rem;
+}

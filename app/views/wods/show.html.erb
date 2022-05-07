@@ -7,7 +7,8 @@
 <% @logs.each do |log| %>
   <div class="row mt-3">
     <div class="col-8">
-      <%= log.date %>
+      <div><b><%= log.date %></b></div>
+      <div><%= log.result %></div>
     </div>
     <div class="col-4">
       <%= link_to '詳細', wod_log_path(@wod, log), class: 'btn btn-secondary' %>

@@ -14,6 +14,7 @@ ja:
         box: BOX
       log:
         date: 日付
+        kind: 種別
         result: 結果
         rate: 達成度
         memo: 感想

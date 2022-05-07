@@ -1,0 +1,35 @@
+<h2>ログ詳細</h2>
+<div>
+  <h5>日付</h5>
+  <div class="mb-5">
+    <%= log.date %>
+  </div>
+
+  <h5>種別</h5>
+  <div class="mb-5">
+    <%= log.kind %>
+  </div>
+
+  <h5>結果</h5>
+  <div class="mb-5">
+    <%= log.result %>
+  </div>
+
+  <h5>達成度</h5>
+  <div class="mb-5">
+    <%= log.rate %>
+  </div>
+
+  <h5>感想</h5>
+  <div class="mb-5">
+    <%= log.memo %>
+  </div>
+</div>
+
+<div class="w-100 mb-5">
+  <%= link_to '編集する', edit_wod_log_path(wod,log), class: 'btn btn-secondary' %>
+  <%= link_to '削除する', wod_log_path(wod,log),  method: :delete, data: { confirm: '本当に削除しますか？' }, class: 'btn btn-danger float-right' %>
+</div>
+
+<h2>WOD詳細</h2>
+<%= render 'shared/wod_detail', wod: wod %>
