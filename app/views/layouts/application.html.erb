@@ -12,6 +12,22 @@
 </head>
 
 <body>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+  <%= link_to "RecordWod", '/', class: "navbar-brand" %>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarCollapse">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item <%= class_names(active: current_page?(controller: 'wods', action: 'index')) %>">
+        <%= link_to 'WOD一覧', wods_path, class: "nav-link" %>
+      </li>
+      <li class="nav-item <%= class_names(active: current_page?(controller: 'calendars', action: 'show')) %>">
+        <%= link_to 'カレンダー', calendar_path, class: "nav-link" %>
+      </li>
+    </ul>
+  </div>
+</nav>
 <div class="container">
   <%= yield %>
 </div>

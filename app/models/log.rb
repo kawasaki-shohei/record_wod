@@ -1,4 +1,14 @@
 class Log < ApplicationRecord
+  enum kind: {
+    unset: 0,
+    wod: 1,
+    skill: 2,
+    strength: 3,
+    conditioning: 4,
+    stretch: 5,
+    other: 99
+  }
+
   belongs_to :wod
 
   validates :date, presence: true

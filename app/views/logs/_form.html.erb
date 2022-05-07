@@ -9,6 +9,11 @@
   </div>
 
   <div class="form-group">
+    <%= f.label :kind, class: 'col-form-label' %>
+    <%= f.select :kind, Log.kinds.keys, {}, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
     <%= f.label :result, class: 'col-form-label' %>
     <div class="">
       <%= f.text_area :result, class: 'form-control' %>
@@ -31,3 +36,7 @@
 
   <%= f.submit '登録する', class: 'btn btn-dark mb-5' %>
 <% end %>
+
+<script>
+  $('textarea').autosize();
+</script>

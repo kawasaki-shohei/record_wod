@@ -1,4 +1,8 @@
 class LogsController < ApplicationController
+  def index
+    @logs = Log.eager_load(:wod).where(date: params[:start]..params[:end])
+  end
+
   def new
     @wod = Wod.find(params[:wod_id])
     @log = Log.new
@@ -44,6 +48,6 @@ class LogsController < ApplicationController
   private
 
   def log_params
-    params.require(:log).permit(:date, :result, :memo, :rate)
+    params.require(:log).permit(:date, :kind, :result, :memo, :rate)
   end
 end

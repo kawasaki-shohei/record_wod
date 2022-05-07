@@ -1,0 +1,33 @@
+<h1>カレンダー</h1>
+<div id='calendar'></div>
+<div id="log-detail" class="mt-5"></div>
+<div class="logs-button">
+  <% @logs.each do |log| %>
+    <%= link_to log.date, wod_log_path(log.wod, log), remote: true, id: "hiding-log-detail-button-id-#{log.id}", class: "btn btn-secondary d-none" %>
+  <% end %>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    let calendar = new Calendar(calendarEl, {
+      plugins: [ dayGridPlugin, timeGridPlugin, listPlugin ],
+      initialView: 'dayGridMonth',
+      height: "auto",
+      fixedWeekCount: false,
+      headerToolbar: {
+        left: 'prev',
+        center: 'title',
+        right: 'today next'
+      },
+      events: "<%= logs_path %>",
+      eventClick: function(info) {
+        info.jsEvent.preventDefault();
+        $.ajax({
+          url: info.event.url
+        })
+      }
+    });
+    calendar.render();
+  });
+</script>
