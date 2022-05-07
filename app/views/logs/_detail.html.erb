@@ -12,7 +12,7 @@
 
   <h5>結果</h5>
   <div class="mb-5">
-    <%= log.result %>
+    <%= simple_format(log.result) %>
   </div>
 
   <h5>達成度</h5>
@@ -22,7 +22,7 @@
 
   <h5>感想</h5>
   <div class="mb-5">
-    <%= log.memo %>
+    <%= simple_format(log.memo) %>
   </div>
 </div>
 
