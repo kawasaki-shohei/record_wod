@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     resources :logs, except: :index
   end
   resources :logs, only: :index, format: :json
-  resource :calendar, only: [:show]
+  get 'calendar', to: 'logs#index', as: 'calendar'
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       post 'fetch_maebashi_wod', to: 'maebashi_wods#create'

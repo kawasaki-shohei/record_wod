@@ -3,7 +3,7 @@
 <div id="log-detail" class="mt-5"></div>
 <div class="logs-button">
   <% @logs.each do |log| %>
-    <%= link_to log.date, wod_log_path(log.wod, log), remote: true, id: "hiding-log-detail-button-id-#{log.id}", class: "btn btn-secondary d-none" %>
+    <%= link_to log.date, wod_log_path(log.wod, log), remote: true, id: "hiding-log-detail-link-id-#{log.id}", class: "d-none" %>
   <% end %>
 </div>
 
@@ -20,7 +20,7 @@
         center: 'title',
         right: 'today next'
       },
-      events: "<%= logs_path %>",
+      events: "<%= logs_path(format: :json) %>",
       eventClick: function(info) {
         info.jsEvent.preventDefault();
         $.ajax({

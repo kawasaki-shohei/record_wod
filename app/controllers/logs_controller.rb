@@ -1,6 +1,8 @@
 class LogsController < ApplicationController
   def index
-    @logs = Log.eager_load(:wod).where(date: params[:start]..params[:end])
+    start = params[:start] || Date.current.beginning_of_month.to_date
+    finish = params[:end] || Date.current.end_of_month.to_date
+    @logs = Log.eager_load(:wod).where(date: start..finish)
   end
 
   def new
