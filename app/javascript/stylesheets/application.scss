@@ -3,5 +3,13 @@
 
 // グローバルCSS変数をカスタマイズ
 :root {
-  --fc-small-font-size: .875rem;
+  //fullcalendar
+  --fc-small-font-size: .5rem;
+}
+//fullcalendar
+.fc-daygrid-block-event .fc-event-time, .fc-daygrid-block-event .fc-event-title {
+  padding: 10px 1px;
+}
+a.fc-col-header-cell-cushion, a.fc-daygrid-day-number {
+  color: #212529;
 }

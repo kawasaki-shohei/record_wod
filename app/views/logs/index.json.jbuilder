@@ -6,13 +6,13 @@ kinds =  {
     color: "black",
   },
   skill: {
-    color: "green",
+    color: "red",
   },
   strength: {
     color: "blue",
   },
   conditioning: {
-    color: "red",
+    color: "green",
   },
   stretch: {
     color: "orange"
@@ -24,7 +24,7 @@ kinds =  {
 json.array! @logs do |log|
   json.id log.id
   json.url wod_log_path(log.wod, log, format: :js)
-  json.title log.wod.name
+  json.title log.kind
   json.start log.date
   json.color kinds[log.kind.to_sym][:color]
 end

@@ -22,7 +22,7 @@
       <li class="nav-item <%= class_names(active: current_page?(controller: 'wods', action: 'index')) %>">
         <%= link_to 'WOD一覧', wods_path, class: "nav-link" %>
       </li>
-      <li class="nav-item <%= class_names(active: current_page?(controller: 'calendars', action: 'show')) %>">
+      <li class="nav-item <%= class_names(active: controller_name == 'logs' && action_name =='index') %>">
         <%= link_to 'カレンダー', calendar_path, class: "nav-link" %>
       </li>
     </ul>
