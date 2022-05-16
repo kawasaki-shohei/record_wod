@@ -11,7 +11,8 @@ class Wod < ApplicationRecord
     roppongi: 1,
     maebashi: 2,
     thedadwod: 3,
-    online_wod: 4
+    online_wod: 4,
+    smart_wod: 5
   }, _prefix: :box
 
   validates :date, presence: true
