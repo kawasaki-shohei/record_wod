@@ -25,10 +25,23 @@
       <li class="nav-item <%= class_names(active: controller_name == 'logs' && action_name =='index') %>">
         <%= link_to 'カレンダー', calendar_path, class: "nav-link" %>
       </li>
+      <li class="nav-item <%= class_names(active: controller_name == 'wods' && %w[new create].include?(action_name)) %>">
+        <%= link_to 'WOD追加', new_wod_path, class: "nav-link" %>
+      </li>
     </ul>
   </div>
 </nav>
 <div class="container">
+  <% if notice.present? %>
+    <div class="alert alert-success">
+      <strong><%= notice %></strong>
+    </div>
+  <% end %>
+  <% if alert.present? %>
+    <div class="alert alert-danger">
+      <strong><%= alert %></strong>
+    </div>
+  <% end %>
   <%= yield %>
 </div>
 <footer>
