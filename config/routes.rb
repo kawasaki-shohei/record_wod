@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :instagram_wods, only: [:new, :create]
   resources :wodify_wods, only: [:new, :create]
-  resources :wods, only: [:index, :new, :create, :show, :edit, :update] do
+  resources :wods do
     resources :logs, except: :index
   end
   resources :logs, only: :index, format: :json

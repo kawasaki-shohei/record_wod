@@ -24,7 +24,10 @@
       eventClick: function(info) {
         info.jsEvent.preventDefault();
         $.ajax({
+          // MARK: railsのdata-remoteを使っている
           url: info.event.url
+        }).always(function() {
+          $('html, body').animate({scrollTop: $('#log-detail').offset().top}, 500, 'swing');
         })
       }
     });

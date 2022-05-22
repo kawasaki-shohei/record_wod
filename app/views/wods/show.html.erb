@@ -1,7 +1,12 @@
 <%= link_to '< WOD一覧', wods_path, class: 'btn btn-secondary my-3' %>
 <h1>WOD詳細</h1>
 <%= render 'shared/wod_detail', wod: @wod %>
-<%= link_to 'WODを編集', edit_wod_path(@wod), class: 'btn btn-dark mt-3 mb-5' %>
+<div class="mt-3 mb-5">
+  <%= link_to 'WODを編集', edit_wod_path(@wod), class: 'btn btn-dark' %>
+  <% if @wod.logs.blank? %>
+    <%= link_to 'WODを削除', wod_path(@wod), method: :delete, data: { confirm: '本当に削除しますか？' }, class: 'btn btn-danger float-right' %>
+  <% end %>
+</div>
 
 <h2>ログ</h2>
 <% @logs.each do |log| %>

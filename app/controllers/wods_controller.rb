@@ -47,6 +47,12 @@ class WodsController < ApplicationController
     end
   end
 
+  def destroy
+    wod = Wod.find(params[:id])
+    wod.destroy
+    redirect_to wods_path, notice: 'WODを削除しました。'
+  end
+
   private
 
   def wod_params

@@ -39,11 +39,14 @@
 <h2>WOD詳細</h2>
 <%= render 'shared/wod_detail', wod: wod %>
 
-<div class="d-flex">
-  <div class="w-50 pr-2">
+<div class="row">
+  <div class="col-4">
+    <%= link_to 'ログを追加', new_wod_log_path(wod), class: 'btn btn-outline-dark btn-block' %>
+  </div>
+  <div class="col-4">
     <%= link_to 'WOD詳細', wod_path(wod), class: 'btn btn-secondary btn-block' %>
   </div>
-  <div class="w-50 pl-2">
+  <div class="col-4">
     <%= link_to 'WOD編集', edit_wod_path(wod), class: 'btn btn-dark btn-block' %>
   </div>
 </div>
